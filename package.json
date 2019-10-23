@@ -1,5 +1,5 @@
 {
-  "name": "super-rest",
+  "name": "express-typescript-realworld",
   "version": "1.0.0",
   "main": "dist/index.js",
   "license": "MIT",
