@@ -1,20 +1,35 @@
 {
   "name": "super-rest",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --config ./webpack/prod.config.js",
-    "dev": "webpack -w --config ./webpack/dev.config.js",
-    "start": "env-cmd -f ./.env nodemon dist/app.js"
+    "tsc": "tsc",
+    "dev": "env-cmd -f ./.env ts-node src/app.ts",
+    "dev:watch": "env-cmd -f ./.env ts-node-dev src/app.ts",
+    "start": "env-cmd -f ./.env node dist/app.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "ejs": "^2.7.1",
+    "errorhandler": "^1.5.1",
     "express": "^4.17.1",
+    "express-jwt": "^5.3.1",
+    "express-session": "^1.17.0",
     "jsonwebtoken": "^8.5.1",
+    "method-override": "^3.0.0",
+    "methods": "^1.1.2",
     "mongodb": "^3.3.2",
     "mongoose": "^5.7.4",
-    "validator": "^11.1.0"
+    "mongoose-unique-validator": "^2.0.3",
+    "morgan": "^1.9.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "request": "^2.88.0",
+    "slug": "^1.1.0",
+    "underscore": "^1.9.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -22,22 +37,15 @@
     "@types/jsonwebtoken": "^8.3.4",
     "@types/mongoose": "^5.5.20",
     "@types/node": "^12.7.12",
-    "@types/validator": "^10.11.3",
     "@typescript-eslint/eslint-plugin": "^2.3.3",
     "@typescript-eslint/parser": "^2.3.3",
     "env-cmd": "^10.0.1",
     "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.4.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "nodemon": "^1.19.3",
     "prettier": "^1.18.2",
-    "ts-loader": "^6.2.0",
     "ts-node": "^8.4.1",
-    "typescript": "^3.6.4",
-    "webpack": "^4.41.1",
-    "webpack-cli": "^3.3.9",
-    "webpack-merge": "^4.2.2",
-    "webpack-node-externals": "^1.7.2",
-    "webpack-shell-plugin": "^0.5.0"
+    "ts-node-dev": "^1.0.0-pre.43",
+    "typescript": "^3.6.4"
   }
 }

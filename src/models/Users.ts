@@ -53,6 +53,7 @@ userSchema.pre<IUser>('save', async function(next) {
 userSchema.methods.generateAuthToken = async function() {
   const JWT_KEY = process.env.JWT_KEY
   if (!JWT_KEY) throw new Error('error')
+
   const user = this
   const token = jwt.sign({ _id: user._id }, JWT_KEY)
   user.tokens = user.tokens.concat({ token })
