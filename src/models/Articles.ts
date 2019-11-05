@@ -1,8 +1,8 @@
 import mongoose, { Schema, Document, Model } from 'mongoose'
 import uniqueValidator from 'mongoose-unique-validator'
 import slug from 'slug'
-
-const User = mongoose.model('User')
+import { User, IUserModel } from './Users'
+import { ICommentModel } from './Comments'
 
 interface IArticle extends Document {
   slug: string
@@ -10,15 +10,15 @@ interface IArticle extends Document {
   description: string
   body: string
   favoritesCount: number
-  comments: []
+  comments: ICommentModel
   tagList: []
-  author: mongoose.Schema.Types.ObjectId
+  author: IUserModel
 }
 
 export interface IArticleModel extends IArticle {
   slugify(): void
   updateFavoriteCount(): void
-  toJSONFor(): void
+  toJSONFor(user: IUserModel): object
 }
 
 const articleSchema = new Schema(
@@ -64,7 +64,7 @@ articleSchema.methods.updateFavoriteCount = function() {
   })
 }
 
-articleSchema.methods.toJSONFor = function(user) {
+articleSchema.methods.toJSONFor = function(user: IUserModel) {
   return {
     slug: this.slug,
     title: this.title,
@@ -79,4 +79,7 @@ articleSchema.methods.toJSONFor = function(user) {
   }
 }
 
-mongoose.model<IArticleModel>('Article', articleSchema)
+export const Article: Model<IArticleModel> = mongoose.model<IArticleModel>(
+  'Article',
+  articleSchema
+)

@@ -1,22 +1,21 @@
-import mongoose, { Schema, Document } from 'mongoose'
+import mongoose, { Schema, Document, Model } from 'mongoose'
+import { IUserModel } from './Users'
+import { IArticleModel } from './Articles'
 
 interface IComment extends Document {
   body: string
-  author: mongoose.Schema.Types.ObjectId
-  article: mongoose.Schema.Types.ObjectId
+  author: IUserModel
+  article: IArticleModel
 }
 
 export interface ICommentModel extends IComment {
-  toJSONFor(): {
+  toJSONFor(
+    user: IUserModel
+  ): {
     id: string
     body: string
     createdAt: string
-    author: {
-      username: string
-      bio: string
-      image: string
-      following: boolean
-    }
+    author: IUserModel
   }
 }
 
@@ -30,7 +29,7 @@ const commentSchema = new Schema(
 )
 
 // Requires population of author
-commentSchema.methods.toJSONFor = function(user) {
+commentSchema.methods.toJSONFor = function(user: IUserModel) {
   return {
     id: this._id,
     body: this.body,
@@ -39,4 +38,7 @@ commentSchema.methods.toJSONFor = function(user) {
   }
 }
 
-mongoose.model<ICommentModel>('Comment', commentSchema)
+export const Comment: Model<ICommentModel> = mongoose.model<ICommentModel>(
+  'Comment',
+  commentSchema
+)

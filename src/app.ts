@@ -1,7 +1,7 @@
 import http from 'http'
 import path from 'path'
 import methods from 'methods'
-import express from 'express'
+import express, { Response, Request, NextFunction } from 'express'
 import bodyParser from 'body-parser'
 import session from 'express-session'
 import cors from 'cors'
@@ -15,9 +15,6 @@ import routers from './routers'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
-interface IError extends Error {
-  status?: number
-}
 const app = express()
 
 app.use(cors())
@@ -59,12 +56,7 @@ app.use(function(req, res, next) {
 })
 
 if (!isProduction) {
-  app.use(function(
-    err: IError,
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) {
+  app.use(function(err: any, req: Request, res: Response, next: NextFunction) {
     console.log(err.stack)
 
     res.status(err.status || 500)
@@ -78,12 +70,7 @@ if (!isProduction) {
   })
 }
 
-app.use(function(
-  err: IError,
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) {
+app.use(function(err: any, req: Request, res: Response, next: NextFunction) {
   res.status(err.status || 500)
   res.json({
     error: {

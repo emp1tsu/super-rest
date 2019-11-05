@@ -1,22 +1,24 @@
-import mongoose, { Schema, Document } from 'mongoose'
+import mongoose, { Schema, Document, Model } from 'mongoose'
 import uniqueValidator from 'mongoose-unique-validator'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import { secret } from '../config'
+import { IArticleModel } from './Articles'
 
 interface IUser extends Document {
-  name: string
+  username: string
   email: string
   bio: string
   image: string
-  favorites: []
-  following: []
+  favorites: IArticleModel
+  following: IUserModel
   hash: string
   salt: string
 }
 
 export interface IUserModel extends IUser {
   validPassword(password: string): boolean
+  setPassword(password: string): void
   generateJWT(): string
   toAuthJSON(): {
     username: string
@@ -31,11 +33,11 @@ export interface IUserModel extends IUser {
     image: string
     following: boolean
   }
-  favorite(): void
-  unFavorite(): void
-  isFavorite(): boolean
-  follow(): void
-  unFollow(): void
+  favorite(id: string): any
+  unFavorite(id: string): any
+  isFavorite(id: string): boolean
+  follow(id: string): any
+  unFollow(id: string): any
   isFollowing(): boolean
 }
 
@@ -74,6 +76,13 @@ userSchema.methods.validPassword = function(password: string) {
     .pbkdf2Sync(password, this.salt, 10000, 512, 'sha512')
     .toString('hex')
   return this.hash === hash
+}
+
+userSchema.methods.setPassword = function(password: string) {
+  this.salt = crypto.randomBytes(16).toString('hex')
+  this.hash = crypto
+    .pbkdf2Sync(password, this.salt, 10000, 512, 'sha512')
+    .toString('hex')
 }
 
 userSchema.methods.generateJWT = function() {
@@ -149,4 +158,7 @@ userSchema.methods.isFollowing = function(id: string) {
   })
 }
 
-mongoose.model<IUserModel>('User', userSchema)
+export const User: Model<IUserModel> = mongoose.model<IUserModel>(
+  'User',
+  userSchema
+)
