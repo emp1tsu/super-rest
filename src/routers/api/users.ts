@@ -10,7 +10,7 @@ const router: Router = Router()
 router.get(
   '/user',
   auth.required,
-  // JWTReques型にしたいけど動かん
+  // 負け
   (req: any, res: Response, next: NextFunction) => {
     User.findById(req.payload.id)
       .then(function(user) {
@@ -97,4 +97,4 @@ router.post('/users', (req: any, res: Response, next: NextFunction) => {
     .catch(next)
 })
 
-export const UserRouter: Router = router
+export default router

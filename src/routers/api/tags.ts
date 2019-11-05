@@ -16,4 +16,4 @@ router.get('/', function(req: any, res, next) {
 
 module.exports = router
 
-export const TagRouter: Router = router
+export default router

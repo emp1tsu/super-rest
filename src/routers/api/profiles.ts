@@ -70,4 +70,4 @@ router.delete('/:username/follow', auth.required, function(
     .catch(next)
 })
 
-export const ProfileRouter: Router = router
+export default router

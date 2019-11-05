@@ -352,4 +352,4 @@ router.delete(
   }
 )
 
-export const ArticleRouter: Router = router
+export default router

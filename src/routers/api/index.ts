@@ -1,22 +1,17 @@
-import express from 'express'
-import users from './users'
-import profiles from './profiles'
-import articles from './articles'
-import tags from './tags'
+import { Router, Request, Response, NextFunction } from 'express'
+import User from './users'
+import Profile from './profiles'
+import Article from './articles'
+import Tag from './tags'
 
-const router = express.Router()
+const router: Router = Router()
 
-router.use('/', users)
-router.use('/', profiles)
-router.use('/', articles)
-router.use('/', tags)
+router.use('/', User)
+router.use('/profiles', Profile)
+router.use('/articles', Article)
+router.use('/tags', Tag)
 
-router.use(function(
-  err: any,
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) {
+router.use(function(err: any, req: Request, res: Response, next: NextFunction) {
   if (err.name === 'ValidationError') {
     return res.status(422).json({
       errors: Object.keys(err.errors).reduce(function(errors, key) {
@@ -30,3 +25,5 @@ router.use(function(
 
   return next(err)
 })
+
+export default router

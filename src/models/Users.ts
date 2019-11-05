@@ -38,7 +38,7 @@ export interface IUserModel extends IUser {
   isFavorite(id: string): boolean
   follow(id: string): any
   unFollow(id: string): any
-  isFollowing(): boolean
+  isFollowing(id: string): boolean
 }
 
 const userSchema: Schema = new Schema(
@@ -110,7 +110,7 @@ userSchema.methods.toAuthJSON = function() {
   }
 }
 
-userSchema.methods.toProfileJSONFor = function(user) {
+userSchema.methods.toProfileJSONFor = function(user: IUserModel) {
   return {
     username: this.username,
     bio: this.bio,
